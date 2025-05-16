@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplos de Carros</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="container">
+    <div id="buttons">
+        <button id="list-button">Listagem</button>
+        <button id="create-button">Criação</button>
+        <button id="edit-button">Edição</button>
+        <button id="delete-button">Deleção</button>
+    </div>
+
+    <div id="create-tab" class="tab">
+        <h2>Criação de Carros</h2>
+        <input type="text" id="create-nome" placeholder="Nome">
+        <input type="text" id="create-cor" placeholder="Cor">
+        <button id="create-submit">Criar Carro</button>
+    </div>
+
+    <div id="edit-tab" class="tab">
+        <h2>Edição de Carros</h2>
+        <select id="edit-select"></select>
+        <input type="text" id="edit-nome" placeholder="Nome">
+        <input type="text" id="edit-cor" placeholder="Cor">
+        <button id="edit-submit">Confirmar Edição</button>
+    </div>
+
+    <div id="delete-tab" class="tab">
+        <h2>Deleção de Carros</h2>
+        <select id="delete-select"></select>
+        <button id="delete-submit">Confirmar Deleção</button>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+
