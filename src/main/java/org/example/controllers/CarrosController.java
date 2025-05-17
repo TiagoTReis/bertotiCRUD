@@ -6,11 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+@CrossOrigin (origins = "*")
 @RestController
 @RequestMapping("/carros")
 public class CarrosController {
@@ -42,33 +40,40 @@ public class CarrosController {
     }
 
     @PostMapping
-    Carros postCarros(@RequestBody Carros carro) {
+    public Carros postCarros(@RequestBody Carros carro) {
+        carro.setId(UUID.randomUUID().toString()); // Garante que o carro novo tenha um ID único
         carros.add(carro);
         return carro;
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Carros> putCarros(@PathVariable String id,
-                                     @RequestBody Carros carro) {
-        int carrosIndex = -1;
-
-        for (Carros c : carros) {
-            if (c.getId().equals(id)) {
-                carrosIndex = carros.indexOf(c);
-                carros.set(carrosIndex, carro);
+    public ResponseEntity<Carros> putCarros(@PathVariable String id, @RequestBody Carros carro) {
+        for (int i = 0; i < carros.size(); i++) {
+            if (carros.get(i).getId().equals(id)) {
+                carro.setId(id); // Garante que o ID permaneça o mesmo
+                carros.set(i, carro);
+                return new ResponseEntity<>(carro, HttpStatus.OK); // Atualizado com sucesso
             }
         }
 
-        return (carrosIndex == -1) ?
-                new ResponseEntity<>(postCarros(carro), HttpStatus.CREATED) :
-                new ResponseEntity<>(carro, HttpStatus.OK);
-
-
+        // Se não encontrar, cria um novo com o ID fornecido
+        carro.setId(id);
+        carros.add(carro);
+        return new ResponseEntity<>(carro, HttpStatus.CREATED); // Criado
     }
+
     @DeleteMapping("/{id}")
-    void deleteCarros(@PathVariable String id){
-        carros.removeIf(c->c.getId().equals(id));
+    public ResponseEntity<Void> deleteCarro(@PathVariable String id) {
+        // Remove o carro com o ID especificado
+        boolean removed = carros.removeIf(carro -> carro.getId().equals(id));
+
+        if (removed) {
+            return ResponseEntity.ok().build(); // Retorna 200 OK
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Retorna 404 caso não tenha encontrado o carro
+        }
     }
+
 
 
 }
